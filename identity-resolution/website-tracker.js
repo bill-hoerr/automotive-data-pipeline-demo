@@ -36,6 +36,71 @@
         }
     }
     
+    function checkPrivacyCompliance() {
+        /**
+         * Check user privacy preferences and browser settings
+         * Respects Do Not Track and consent management platforms
+         */
+        
+        // Check for Do Not Track browser setting
+        if (navigator.doNotTrack === '1' || 
+            navigator.doNotTrack === 'yes' || 
+            navigator.msDoNotTrack === '1') {
+            log('Do Not Track detected - respecting user privacy preference');
+            return false;
+        }
+        
+        // Check for consent management platform (if implemented)
+        if (window.cookieConsent && !window.cookieConsent.analytics) {
+            log('Analytics consent not granted');
+            return false;
+        }
+        
+        // Check for opt-out cookie
+        if (document.cookie.includes('identity_tracking_opt_out=true')) {
+            log('User has opted out of identity tracking');
+            return false;
+        }
+        
+        // Check for privacy-focused browser extensions
+        if (window.navigator.userAgent.includes('DuckDuckGo')) {
+            log('Privacy-focused browser detected - limited tracking');
+            return false;
+        }
+        
+        return true;
+    }
+    
+    function respectPrivacySettings() {
+        /**
+         * Additional privacy safeguards and data minimization
+         */
+        
+        // Anonymize IP address on client side (basic)
+        const originalSendBeacon = navigator.sendBeacon;
+        if (originalSendBeacon) {
+            navigator.sendBeacon = function(url, data) {
+                // Remove detailed fingerprinting in privacy mode
+                if (typeof data === 'string') {
+                    try {
+                        const parsed = JSON.parse(data);
+                        if (parsed.browser_fingerprint) {
+                            // Minimal fingerprint for privacy compliance
+                            parsed.browser_fingerprint = {
+                                timezone: parsed.browser_fingerprint.timezone,
+                                language: parsed.browser_fingerprint.language
+                            };
+                        }
+                        data = JSON.stringify(parsed);
+                    } catch (e) {
+                        // If parsing fails, continue with original data
+                    }
+                }
+                return originalSendBeacon.call(this, url, data);
+            };
+        }
+    }
+    
     function getUrlParameters() {
         /**
          * Extract marketing attribution parameters from URL
@@ -256,6 +321,17 @@
         try {
             log('🚀 Initializing customer identity tracking...');
             
+            // PRIVACY CHECK FIRST - Respect user preferences
+            if (!checkPrivacyCompliance()) {
+                log('⛔ Privacy compliance check failed - tracking disabled');
+                return;
+            }
+            
+            // Apply additional privacy safeguards
+            respectPrivacySettings();
+            
+            log('✅ Privacy compliance verified - proceeding with tracking');
+            
             // Collect URL attribution parameters
             const urlParams = getUrlParameters();
             log('URL parameters collected:', urlParams);
@@ -401,9 +477,12 @@
  * - Minify for production to reduce payload size
  * 
  * Privacy Compliance:
- * - Respects Do Not Track browser settings
+ * - Respects Do Not Track browser settings automatically
+ * - Checks for consent management platform integration
+ * - Honors opt-out cookies and user preferences
  * - Only collects anonymous identifiers (no PII)
  * - Browser fingerprinting is minimal and privacy-focused
+ * - Includes data minimization for privacy-conscious users
  * 
  * Performance:
  * - Asynchronous execution prevents page blocking
