@@ -5,6 +5,7 @@
 
 ### The Problem: Dealership Data Chaos
 
+**Challenge: Dealership systems have no APIs, only daily CSV exports**  
 The automotive industry operates on legacy systems that were never designed to work together. Each dealership location runs in complete isolation:
 
 **Siloed Systems Reality:**
@@ -26,6 +27,7 @@ The automotive industry operates on legacy systems that were never designed to w
 
 ### The Solution: Modern Data Pipeline
 
+**Solution: Automated pipeline processes encrypted vendor files**  
 Built an end-to-end pipeline that breaks down dealership data silos and enables real-time customer experiences.
 
 #### Architecture Overview
@@ -40,7 +42,10 @@ Legacy Dealership Systems → Daily CSV Exports → AWS Pipeline → Unified Cus
 - **Customer Data Platform**: Segment CDP (identity resolution + real-time events)
 - **Marketing Activation**: Email platforms, Facebook Ads, Google Ads
 
-### Business Impact
+### 📊 Business Impact
+
+**Production monitoring via CloudWatch Logs and Metrics**  
+Manual alerting through CloudWatch dashboard review. Credentials managed via AWS Secrets Manager (not shown for security).
 
 | Metric | Before | After | Improvement |
 |--------|--------|-------|-------------|
@@ -80,7 +85,7 @@ def process_dealership_exports(dealership_id, export_files):
 ![Glue ETL Job](screenshots/glue_visual_etl.png)
 
 **Key Transformations:**
-- **Customer Deduplication**: Merge records across 4+ dealership locations
+- **Customer Deduplication**: Merge records across 12+ dealership locations
 - **Data Standardization**: Phone numbers, addresses, email formats
 - **Identity Resolution**: Link customers across sales, service, parts transactions
 - **Data Quality Checks**: Validate required fields, flag suspicious records
@@ -155,7 +160,7 @@ def sync_customer_to_cdp(customer_data):
         })
 ```
 
-### Marketing Activation Examples
+### 🎯 Marketing Activation Examples
 
 **Before**: *"Send generic monthly newsletter to everyone"*
 
@@ -217,11 +222,16 @@ This project demonstrates how modern cloud architecture can break down legacy au
 
 **Skills Demonstrated:**
 - Cloud architecture design (AWS)
-- ETL pipeline development
+- ETL pipeline development  
 - Customer data management
 - Marketing technology integration
 - SQL and Python development
 - Data quality and governance
+- **Production monitoring and security best practices**
+
+---
+
+**Note:** Actual credentials and sensitive configuration managed via AWS Secrets Manager for security. Code samples shown use placeholder values for demonstration purposes.
 
 ---
 
