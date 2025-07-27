@@ -1,7 +1,7 @@
 # Automotive Customer Data Pipeline
 ## From Fragmented Dealership Systems to Unified Customer Experiences
 
-![Pipeline Architecture](architecture/aws_architecture_diagram.png)
+![Pipeline Architecture](architecture/automotive-pipeline-map.png)
 
 ### The Problem: Dealership Data Chaos
 
