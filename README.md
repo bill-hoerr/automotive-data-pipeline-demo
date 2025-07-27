@@ -5,7 +5,7 @@
 
 ### The Problem: Dealership Data Chaos
 
-**Challenge: Dealership systems have no APIs, only daily CSV exports**  
+**Challenge: Dealership systems have limited APIs, only daily CSV exports**  
 The automotive industry operates on legacy systems that were never designed to work together. Each dealership location runs in complete isolation:
 
 **Siloed Systems Reality:**
@@ -17,13 +17,13 @@ The automotive industry operates on legacy systems that were never designed to w
 
 **The Daily Nightmare:**
 - **No APIs** - Legacy DMS vendors provide zero integration options
-- **Manual CSV exports** - IT staff manually downloads files each morning
+- **Manual CSV exports** - Staff manually downloads files each morning
 - **No real-time data** - Everything is batch processed from previous day
 - **Location silos** - Customer who services at Location A, buys at Location B = two separate records
 - **8+ hour delays** - By the time marketing gets data, customers have already made decisions
 - **Missed opportunities** - Can't trigger "service reminder" emails or target recent buyers
 
-> *"A customer could buy a $60,000 truck on Monday, and our marketing system wouldn't know about it until Wednesday. Meanwhile, we're still sending them 'shop for trucks' ads."*
+> *"A customer could buy a $50,000 car on Monday, and our marketing system wouldn't know about it until Wednesday. Meanwhile, we're still sending them 'shop for vehicle ads."*
 
 ## Custom Identity Resolution System
 
@@ -93,7 +93,7 @@ WHERE l.created_at >= NOW() - INTERVAL '24 hours';
 - **Marketing ROI measurement** - Know exactly which campaigns drive vehicle sales
 - **Sales team insights** - See customer's website journey during sales conversations  
 - **Personalized experiences** - Target website visitors with relevant inventory based on interest
-- **Revenue attribution** - $2.3M in vehicle sales tracked back to specific marketing campaigns
+- **Revenue attribution** - Revenue in vehicle sales tracked back to specific marketing campaigns
 
 **This system processes 500+ visitor sessions and 50+ leads daily with 95%+ matching accuracy.**
 
@@ -121,7 +121,7 @@ Manual alerting through CloudWatch dashboard review. Credentials managed via AWS
 | Metric | Before | After | Improvement |
 |--------|--------|-------|-------------|
 | Data Processing Time | 8+ hours | 30 minutes | **93% faster** |
-| Customer Record Accuracy | 65% match rate | 98% match rate | **51% improvement** |
+| Customer Record Accuracy | 47% match rate | 98% match rate | **51% improvement** |
 | Marketing Response Rate | 2.3% email open | 7.8% email open | **239% increase** |
 | Customer Data Freshness | 24-48 hours old | Near real-time | **Real-time activation** |
 | Cross-location Customer View | 0% unified | 100% unified | **Complete visibility** |
@@ -129,7 +129,7 @@ Manual alerting through CloudWatch dashboard review. Credentials managed via AWS
 ### Technical Implementation
 
 #### 1. Data Ingestion (`scripts/s3_upload_automation.py`)
-Automated the painful manual process of CSV exports from multiple dealership systems.
+Automated the manual process of CSV exports from multiple dealership systems.
 
 ```python
 def process_dealership_exports(dealership_id, export_files):
@@ -156,7 +156,7 @@ def process_dealership_exports(dealership_id, export_files):
 ![Glue ETL Job](screenshots/glue_visual_etl.png)
 
 **Key Transformations:**
-- **Customer Deduplication**: Merge records across 12+ dealership locations
+- **Customer Deduplication**: Merge records across 5+ dealership locations
 - **Data Standardization**: Phone numbers, addresses, email formats
 - **Identity Resolution**: Link customers across sales, service, parts transactions
 - **Data Quality Checks**: Validate required fields, flag suspicious records
@@ -196,7 +196,7 @@ SELECT
   CASE 
     WHEN th.lifetime_value > 100000 THEN 'VIP'
     WHEN th.last_activity > CURRENT_DATE - INTERVAL '90 days' THEN 'Active'
-    WHEN th.last_activity > CURRENT_DATE - INTERVAL '365 days' THEN 'At Risk'
+    WHEN th.last_activity > CURRENT_DATE - INTERVAL '120 days' THEN 'At Risk'
     ELSE 'Inactive'
   END as customer_segment
 FROM customer_base cb
@@ -238,8 +238,8 @@ def sync_customer_to_cdp(customer_data):
 **After**: *Real-time, personalized campaigns:*
 - **New Vehicle Buyers**: Immediate welcome series + accessories offers
 - **Service Due Customers**: Automated service reminders based on mileage/time
-- **High-Value Customers**: VIP invites to exclusive events
-- **Cross-Location**: Customer services at Location A, gets parts offers from Location B
+- **High-Value Customers**: Special offer promotion
+- **Cross-Location**: Global customer events across organization
 - **Lookalike Audiences**: Find similar customers across Facebook/Google Ads
 
 ### Technical Challenges Solved
@@ -329,7 +329,6 @@ This project demonstrates how modern cloud architecture can break down legacy au
 
 **Technical Safeguards:**
 - **Circuit breaker patterns** prevent system overload and cascading failures
-- **Exponential backoff** with jitter for resilient API integrations
 - **Structured logging** with correlation IDs for security audit trails
 - **Database indexes** and query optimization for performance at scale
 
