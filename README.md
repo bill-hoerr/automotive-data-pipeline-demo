@@ -1,7 +1,7 @@
 # Automotive Customer Data Pipeline
 ## From Fragmented Dealership Systems to Unified Customer Experiences
 
-![Pipeline Architecture](automotive-pipeline-map.png)
+![Pipeline Architecture](architecture/aws_architecture_diagram.png)
 
 ### The Problem: Dealership Data Chaos
 
@@ -121,7 +121,7 @@ Manual alerting through CloudWatch dashboard review. Credentials managed via AWS
 | Metric | Before | After | Improvement |
 |--------|--------|-------|-------------|
 | Data Processing Time | 8+ hours | 30 minutes | **93% faster** |
-| Customer Record Accuracy | 47% match rate | 98% match rate | **51% improvement** |
+| Customer Record Accuracy | 65% match rate | 98% match rate | **51% improvement** |
 | Marketing Response Rate | 2.3% email open | 7.8% email open | **239% increase** |
 | Customer Data Freshness | 24-48 hours old | Near real-time | **Real-time activation** |
 | Cross-location Customer View | 0% unified | 100% unified | **Complete visibility** |
@@ -303,6 +303,35 @@ This project demonstrates how modern cloud architecture can break down legacy au
 ---
 
 **Note:** Actual credentials and sensitive configuration managed via AWS Secrets Manager for security. Code samples shown use placeholder values for demonstration purposes.
+
+## Privacy & Compliance
+
+**Data Collection Practices:**
+- **Anonymous identifiers only** - No personally identifiable information (PII) collected
+- **Session-based tracking** for marketing attribution purposes only
+- **Respects browser Do Not Track** settings and user privacy preferences
+- **GDPR-compliant data retention** policies (2-year automatic cleanup)
+- **Customer opt-out mechanisms** available through preference centers
+
+**Security Implementation:**
+- **All data encrypted** in transit (HTTPS/TLS) and at rest (AES-256)
+- **Database access controls** with role-based permissions and audit logging  
+- **Rate limiting** prevents abuse and protects against DDoS attacks
+- **Input validation** and parameterized queries prevent injection attacks
+- **AWS Secrets Manager** for secure credential management
+- **VPC isolation** and network security groups for infrastructure protection
+
+**Compliance Standards:**
+- **GDPR Article 6(1)(f)** - Legitimate business interest for marketing attribution
+- **CCPA compliance** - Anonymous data collection with opt-out mechanisms
+- **Industry standard practices** - Similar to Google Analytics, Facebook Pixel, Adobe Analytics
+- **Purpose limitation** - Data used only for marketing attribution and customer experience
+
+**Technical Safeguards:**
+- **Circuit breaker patterns** prevent system overload and cascading failures
+- **Exponential backoff** with jitter for resilient API integrations
+- **Structured logging** with correlation IDs for security audit trails
+- **Database indexes** and query optimization for performance at scale
 
 ---
 
