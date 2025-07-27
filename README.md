@@ -80,7 +80,7 @@ def process_dealership_exports(dealership_id, export_files):
 ![Glue ETL Job](screenshots/glue_visual_etl.png)
 
 **Key Transformations:**
-- **Customer Deduplication**: Merge records across 12+ dealership locations
+- **Customer Deduplication**: Merge records across 4+ dealership locations
 - **Data Standardization**: Phone numbers, addresses, email formats
 - **Identity Resolution**: Link customers across sales, service, parts transactions
 - **Data Quality Checks**: Validate required fields, flag suspicious records
