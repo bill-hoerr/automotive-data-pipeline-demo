@@ -50,7 +50,7 @@ Manual alerting through CloudWatch dashboard review. Credentials managed via AWS
 | Metric | Before | After | Improvement |
 |--------|--------|-------|-------------|
 | Data Processing Time | 8+ hours | 30 minutes | **93% faster** |
-| Customer Record Accuracy | 65% match rate | 98% match rate | **51% improvement** |
+| Customer Record Accuracy | 47% match rate | 98% match rate | **51% improvement** |
 | Marketing Response Rate | 2.3% email open | 7.8% email open | **239% increase** |
 | Customer Data Freshness | 24-48 hours old | Near real-time | **Real-time activation** |
 | Cross-location Customer View | 0% unified | 100% unified | **Complete visibility** |
